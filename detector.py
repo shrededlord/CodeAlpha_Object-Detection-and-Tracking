@@ -12,7 +12,7 @@ class ModelVariant(Enum):
     YOLOv8l = "yolov8l.pt"
     YOLOv8x = "yolov8x.pt"
 
-def process_video(input_path: str):
+def process_video(input_path: str, output_path: str = "output.mp4"):
     model = YOLO(ModelVariant.YOLOv8n.value)
     label_names = model.model.names
 
@@ -26,7 +26,7 @@ def process_video(input_path: str):
         for prop in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS)
     )
 
-    output_writer = cv2.VideoWriter("output.avi", cv2.VideoWriter_fourcc(*"mp4v"), frame_rate, (frame_width, frame_height))
+    output_writer = cv2.VideoWriter(output_path, cv2.VideoWriter_fourcc(*"mp4v"), frame_rate, (frame_width, frame_height))
 
     while video_capture.isOpened():
         ret, frame = video_capture.read()
@@ -58,4 +58,4 @@ def process_video(input_path: str):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    process_video("your_video_file.mp4")
+    process_video("your_video_file.mp4", "output.mp4")
